@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="fa-pattern" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <!-- Fa erezet mintázat -->
+      <path d="M0 0C8 8 24 8 32 0M0 16C8 24 24 24 32 16M0 32C8 40 24 40 32 32" 
+            stroke="#8C6046" stroke-width="0.5" stroke-opacity="0.1" fill="none"/>
+      <path d="M16 0C16 8 16 24 16 32" 
+            stroke="#8C6046" stroke-width="0.5" stroke-opacity="0.05" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="64" height="64" fill="url(#fa-pattern)"/>
+</svg> 

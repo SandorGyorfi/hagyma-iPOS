@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="csarda-pattern" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <!-- Stilizált tulipán motívum -->
+      <path d="M16 8C16 12 14 14 12 16C10 14 8 12 8 8C8 4 12 0 12 0C12 0 16 4 16 8Z" fill="#A0241C" fill-opacity="0.1"/>
+      <path d="M12 16L12 24" stroke="#A0241C" stroke-width="1" stroke-opacity="0.1"/>
+      <!-- Levél motívumok -->
+      <path d="M24 16C24 18 22 20 20 20C18 20 16 18 16 16C16 14 18 12 20 12C22 12 24 14 24 16Z" fill="#50714B" fill-opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="64" height="64" fill="url(#csarda-pattern)"/>
+</svg> 

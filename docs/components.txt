@@ -1,0 +1,100 @@
+
+================================================================================
+                            Hagyma iPOS Komponensek                             
+================================================================================
+
+
+CartSidebar
+-----------
+
+Leírás: Kosár oldalsáv komponens
+
+Props:
+- items: array - Kosár tételek listája
+- onChangeQuantity: function - Mennyiség módosítás kezelő
+- onRemove: function - Tétel törlés kezelő
+- onClear: function - Kosár ürítés kezelő
+
+Állapotok:
+- loading - Betöltés alatt
+- error - Hiba történt
+- success - Sikeres művelet
+
+Funkciók:
+- Tételek listázása
+- Mennyiség módosítás
+- Tétel törlés
+- Kosár ürítés
+- Végösszeg számítás
+- Rendelés feladás
+
+----------------------------------------
+
+MenuGrid
+--------
+
+Leírás: Menü rács komponens
+
+Props:
+- items: array - Menü tételek listája
+- onAddToCart: function - Kosárba helyezés kezelő
+- category: string? - Szűrés kategóriára
+
+Funkciók:
+- Tételek rácsos megjelenítése
+- Kategória szűrés
+- Kosárba helyezés
+- Részletek megjelenítése
+
+----------------------------------------
+
+OrderList
+---------
+
+Leírás: Rendelések lista komponens
+
+Props:
+- orders: array - Rendelések listája
+- onStatusChange: function - Státusz módosítás kezelő
+
+Állapotok:
+- new - Új rendelés
+- processing - Feldolgozás alatt
+- completed - Teljesítve
+- cancelled - Törölve
+
+Funkciók:
+- Rendelések listázása
+- Státusz kezelés
+- Részletek megjelenítése
+- Időrendi rendezés
+
+----------------------------------------
+
+CategoryFilter
+--------------
+
+Leírás: Kategória szűrő komponens
+
+Props:
+- categories: array - Kategóriák listája
+- selectedCategory: string - Kiválasztott kategória
+- onChange: function - Kategória választás kezelő
+
+Funkciók:
+- Kategóriák listázása
+- Aktív kategória kiemelése
+- Kategória választás
+
+----------------------------------------
+
+StatusBadge
+-----------
+
+Leírás: Státusz jelző komponens
+
+Props:
+- status: string - Státusz azonosító
+- text: string? - Egyedi szöveg
+
+Funkciók:

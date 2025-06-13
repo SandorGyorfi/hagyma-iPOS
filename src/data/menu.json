@@ -1,0 +1,151 @@
+{
+  "termekek": [
+    {
+      "id": "langos-sima",
+      "nev": "Sima lángos",
+      "ar": 3.50,
+      "kategoria": "langos",
+      "leiras": "Frissen sült lángos"
+    },
+    {
+      "id": "langos-tejfolos",
+      "nev": "Tejfölös lángos",
+      "ar": 4.00,
+      "kategoria": "langos",
+      "leiras": "Lángos tejföllel"
+    },
+    {
+      "id": "langos-sajtos",
+      "nev": "Sajtos lángos",
+      "ar": 4.00,
+      "kategoria": "langos",
+      "leiras": "Lángos reszelt sajttal"
+    },
+    {
+      "id": "langos-sajtos-tejfolos",
+      "nev": "Sajtos-tejfölös lángos",
+      "ar": 4.50,
+      "kategoria": "langos",
+      "leiras": "Lángos sajttal és tejföllel"
+    },
+    {
+      "id": "langos-bolognai",
+      "nev": "Bolognai lángos",
+      "ar": 6.50,
+      "kategoria": "langos",
+      "leiras": "Lángos bolognai raguval"
+    },
+    {
+      "id": "palacsinta",
+      "nev": "Palacsinta",
+      "ar": 1.00,
+      "kategoria": "desszert",
+      "leiras": "Klasszikus palacsinta"
+    },
+    {
+      "id": "hotdog-retro",
+      "nev": "Retro hotdog",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Klasszikus retro hotdog"
+    },
+    {
+      "id": "szendvics-meleg-husos",
+      "nev": "Húsos meleg szendvics",
+      "ar": 3.00,
+      "kategoria": "szendvics",
+      "leiras": "Meleg szendvics hússal"
+    },
+    {
+      "id": "szendvics-panini",
+      "nev": "Panini szendvics",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Olasz stílusú panini"
+    },
+    {
+      "id": "szendvics-hideg-vega",
+      "nev": "Vega hideg szendvics",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Vegetáriánus hideg szendvics"
+    },
+    {
+      "id": "szendvics-hideg-husos",
+      "nev": "Hideg szendvics (sonkás / szalámis)",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Választható sonkás vagy szalámis hideg szendvics"
+    },
+    {
+      "id": "szendvics-szarvasszalamis",
+      "nev": "Szarvasszalámis szendvics",
+      "ar": 3.00,
+      "kategoria": "szendvics",
+      "leiras": "Szendvics szarvasszalámival"
+    },
+    {
+      "id": "zsomle-rantott-csirke",
+      "nev": "Rántott csirkemelles zsömle",
+      "ar": 3.50,
+      "kategoria": "szendvics",
+      "leiras": "Zsömle rántott csirkemellel"
+    },
+    {
+      "id": "rantotthus-krumplival",
+      "nev": "Rántott hús sült krumplival",
+      "ar": 6.50,
+      "kategoria": "foetel",
+      "leiras": "Rántott hús sült krumpli körettel"
+    },
+    {
+      "id": "tepsis-sajtos-karaj",
+      "nev": "Tepsis sajtos karaj vegyes körettel, palacsintával",
+      "ar": 9.50,
+      "kategoria": "foetel",
+      "leiras": "Tepsis sajtos karaj vegyes körettel és desszert palacsintával"
+    },
+    {
+      "id": "sajtos-karaj",
+      "nev": "Sajtos karaj vegyes körettel",
+      "ar": 9.00,
+      "kategoria": "foetel",
+      "leiras": "Sajtos karaj választható körettel"
+    },
+    {
+      "id": "gyerekmenu",
+      "nev": "Gyerekmenü (karaj, köret, palacsinta)",
+      "ar": 6.50,
+      "kategoria": "foetel",
+      "leiras": "Gyerekmenü karajjal, körettel és palacsintával"
+    },
+    {
+      "id": "udito",
+      "nev": "Üdítő (Sió, Cola, Rango, Fanta)",
+      "ar": 1.00,
+      "kategoria": "ital",
+      "leiras": "Választható üdítőitalok"
+    },
+    {
+      "id": "kave-tea",
+      "nev": "Kávé / tea",
+      "ar": 1.00,
+      "kategoria": "ital",
+      "leiras": "Választható kávé vagy tea"
+    },
+    {
+      "id": "ice-tea",
+      "nev": "Ice tea",
+      "ar": 1.20,
+      "kategoria": "ital",
+      "leiras": "Jeges tea"
+    },
+    {
+      "id": "viz",
+      "nev": "Víz (mentes / savas)",
+      "ar": 1.00,
+      "kategoria": "ital",
+      "leiras": "Választható mentes vagy szénsavas víz"
+    }
+  ]
+} 

@@ -1,0 +1,105 @@
+
+================================================================================
+                        Hagyma iPOS Adatbázis Struktúra                         
+================================================================================
+
+
+orders
+======
+
+Leírás: Rendelések gyűjtemény
+
+Mezők:
+- id:
+  Típus: string
+  Leírás: Egyedi azonosító (automatikusan generált)
+  kötelező
+- items:
+  Típus: array
+  Leírás: Rendelt tételek listája
+  kötelező
+  Elemek struktúrája:
+    - id: string - Tétel azonosító
+    - name: string - Tétel neve
+    - price: number - Egységár
+    - quantity: number - Mennyiség
+- total:
+  Típus: number
+  Leírás: Végösszeg
+  kötelező
+- status:
+  Típus: string
+  Leírás: Rendelés állapota
+  kötelező
+  Lehetséges értékek: new, processing, completed, cancelled
+- timestamp:
+  Típus: timestamp
+  Leírás: Létrehozás időpontja
+  kötelező
+- table:
+  Típus: string
+  Leírás: Asztal azonosító
+  opcionális
+- notes:
+  Típus: string
+  Leírás: Megjegyzések
+  opcionális
+
+Indexek:
+- timestamp DESC
+- status
+- table
+
+menu
+====
+
+Leírás: Menü tételek gyűjtemény
+
+Mezők:
+- id:
+  Típus: string
+  Leírás: Egyedi azonosító
+  kötelező
+- name:
+  Típus: string
+  Leírás: Tétel neve
+  kötelező
+- price:
+  Típus: number
+  Leírás: Ár
+  kötelező
+- category:
+  Típus: string
+  Leírás: Kategória
+  kötelező
+- description:
+  Típus: string
+  Leírás: Leírás
+  opcionális
+- image:
+  Típus: string
+  Leírás: Kép URL
+  opcionális
+- allergens:
+  Típus: array
+  Leírás: Allergének listája
+  opcionális
+- available:
+  Típus: boolean
+  Leírás: Elérhető-e
+  kötelező, alapértelmezett: True
+
+Indexek:
+- category
+- available
+
+Biztonsági szabályok
+====================
+
+orders:
+- Olvasás: auth != null
+- Írás: auth != null && hasRequiredFields(['items', 'total'])
+
+menu:
+- Olvasás: true
+- Írás: auth != null && auth.token.admin == true
