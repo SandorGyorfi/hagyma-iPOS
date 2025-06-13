@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const PasswordProtected = ({ children }) => {
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
+  const auth = getAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password === 'Luna351') {
+    try {
+      // Használjuk a Firebase autentikációt email/jelszó kombinációval
+      await signInWithEmailAndPassword(auth, 'admin@hagyma-ipos.hu', password);
       setIsAuthenticated(true);
       setError('');
-    } else {
+    } catch (err) {
       setError('Helytelen jelszó!');
       setPassword('');
     }
