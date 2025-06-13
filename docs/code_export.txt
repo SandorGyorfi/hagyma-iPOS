@@ -1,0 +1,2040 @@
+
+================================================================================
+File: src/components/CartSidebar.js
+================================================================================
+
+import React from 'react';
+
+const CartSidebar = ({ items, onQuantityChange, onRemove, onClear, onPayment, isLoading }) => {
+  const total = items.reduce((sum, item) => sum + item.ar * item.mennyiseg, 0);
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Fejléc */}
+      <div className="
+        p-4
+        border-b-2
+        border-csarda-barna-vilagos
+        bg-white
+      ">
+        <h2 className="
+          text-2xl
+          font-bree
+          text-csarda-barna-sotet
+          flex
+          justify-between
+          items-center
+        ">
+          Kosár
+          <button
+            onClick={onClear}
+            disabled={items.length === 0}
+            className="
+              text-base
+              px-4
+              py-2
+              rounded-lg
+              bg-csarda-piros-mely
+              text-white
+              hover:bg-csarda-piros-vilagos
+              disabled:opacity-50
+              disabled:cursor-not-allowed
+              transition-colors
+              duration-200
+            "
+          >
+            Ürítés
+          </button>
+        </h2>
+      </div>
+
+      {/* Tételek listája */}
+      <div className="
+        flex-1
+        overflow-y-auto
+        px-4
+      ">
+        {items.length === 0 ? (
+          <div className="
+            flex
+            flex-col
+            items-center
+            justify-center
+            h-full
+            text-csarda-barna-vilagos
+            text-lg
+            font-bree
+          ">
+            A kosár üres
+          </div>
+        ) : (
+          <ul className="py-4 space-y-4">
+            {items.map((item) => (
+              <li
+                key={item.id}
+                className="
+                  bg-white
+                  rounded-xl
+                  p-4
+                  shadow-sm
+                  border-2
+                  border-csarda-barna-vilagos
+                "
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="
+                    text-xl
+                    font-bree
+                    text-csarda-barna-sotet
+                    flex-1
+                  ">
+                    {item.nev}
+                  </h3>
+                  <button
+                    onClick={() => onRemove(item.id)}
+                    className="
+                      ml-2
+                      text-2xl
+                      text-csarda-piros-mely
+                      hover:text-csarda-piros-vilagos
+                      transition-colors
+                      duration-200
+                      p-2
+                    "
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="
+                  flex
+                  justify-between
+                  items-center
+                ">
+                  <div className="
+                    flex
+                    items-center
+                    bg-csarda-feher-tort
+                    rounded-lg
+                    p-1
+                  ">
+                    <button
+                      onClick={() => onQuantityChange(item.id, item.mennyiseg - 1)}
+                      className="
+                        text-2xl
+                        w-12
+                        h-12
+                        flex
+                        items-center
+                        justify-center
+                        text-csarda-barna-sotet
+                        hover:bg-csarda-barna-vilagos
+                        hover:bg-opacity-10
+                        rounded-lg
+                        transition-colors
+                        duration-200
+                      "
+                    >
+                      -
+                    </button>
+                    <span className="
+                      text-xl
+                      font-bree
+                      w-12
+                      text-center
+                    ">
+                      {item.mennyiseg}
+                    </span>
+                    <button
+                      onClick={() => onQuantityChange(item.id, item.mennyiseg + 1)}
+                      className="
+                        text-2xl
+                        w-12
+                        h-12
+                        flex
+                        items-center
+                        justify-center
+                        text-csarda-barna-sotet
+                        hover:bg-csarda-barna-vilagos
+                        hover:bg-opacity-10
+                        rounded-lg
+                        transition-colors
+                        duration-200
+                      "
+                    >
+                      +
+                    </button>
+                  </div>
+                  <p className="
+                    text-xl
+                    font-bold
+                    text-csarda-piros-mely
+                  ">
+                    £{(item.ar * item.mennyiseg).toFixed(2)}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Összesítő és fizető gomb */}
+      <div className="
+        border-t-2
+        border-csarda-barna-vilagos
+        bg-white
+        p-4
+        space-y-4
+      ">
+        <div className="
+          flex
+          justify-between
+          items-center
+          text-2xl
+          font-bree
+          text-csarda-barna-sotet
+        ">
+          <span>Összesen:</span>
+          <span className="text-csarda-piros-mely font-bold">
+            £{total.toFixed(2)}
+          </span>
+        </div>
+        <button
+          onClick={onPayment}
+          disabled={items.length === 0 || isLoading}
+          className="
+            w-full
+            py-4
+            text-xl
+            font-bree
+            rounded-xl
+            bg-csarda-zold-palack
+            text-white
+            hover:bg-csarda-zold-kakukkfu
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+            transition-colors
+            duration-200
+            relative
+          "
+        >
+          {isLoading ? (
+            <span className="
+              flex
+              items-center
+              justify-center
+              gap-2
+            ">
+              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+              Feldolgozás...
+            </span>
+          ) : (
+            'Fizetés'
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default CartSidebar; 
+
+
+================================================================================
+File: src/components/CategoryBar.js
+================================================================================
+
+import React from 'react';
+
+const CategoryBar = ({ selectedCategory, onSelect }) => {
+  const categories = [
+    { id: 'langos', name: 'Lángos' },
+    { id: 'szendvics', name: 'Szendvicsek' },
+    { id: 'foetel', name: 'Főételek' },
+    { id: 'palacsinta', name: 'Palacsinta' },
+    { id: 'jegkrem', name: 'Jégkrémek' },
+    { id: 'ital', name: 'Italok' }
+  ];
+
+  return (
+    <div className="
+      h-full
+      flex
+      items-center
+      px-4
+      space-x-4
+      overflow-x-auto
+      scrollbar-thin
+      scrollbar-thumb-csarda-barna-vilagos
+      scrollbar-track-transparent
+    ">
+      {categories.map(category => (
+        <button
+          key={category.id}
+          onClick={() => onSelect(category.id)}
+          className={`
+            px-6
+            py-2
+            rounded-lg
+            font-bree
+            text-lg
+            transition-colors
+            duration-200
+            border-2
+            whitespace-nowrap
+            ${
+              selectedCategory === category.id
+              ? 'bg-csarda-barna-sotet text-csarda-feher-alap border-csarda-piros-mely'
+              : 'bg-transparent text-csarda-barna-sotet border-csarda-barna-vilagos hover:bg-csarda-barna-vilagos/10'
+            }
+          `}
+        >
+          {category.name}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+export default CategoryBar; 
+
+
+================================================================================
+File: src/components/FullscreenExitButton.js
+================================================================================
+
+import React, { useEffect, useState } from 'react';
+import { FaCompress } from 'react-icons/fa';
+import screenfull from 'screenfull';
+
+const FullscreenExitButton = ({ onExit }) => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Figyeljük a teljes képernyős állapotot
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(screenfull.isFullscreen);
+    };
+
+    if (screenfull.isEnabled) {
+      screenfull.on('change', handleFullscreenChange);
+      return () => {
+        if (screenfull.isEnabled) {
+          screenfull.off('change', handleFullscreenChange);
+        }
+      };
+    }
+  }, []);
+
+  // Kilépés a teljes képernyőből
+  const handleExitFullscreen = async () => {
+    try {
+      if (screenfull.isEnabled && screenfull.isFullscreen) {
+        await screenfull.exit();
+        if (onExit) onExit();
+      }
+    } catch (error) {
+      console.error('Hiba a teljes képernyőből való kilépéskor:', error);
+    }
+  };
+
+  // Ha nincs teljes képernyő vagy nem támogatott, ne jelenjen meg a gomb
+  if (!isFullscreen || !screenfull.isEnabled) return null;
+
+  return (
+    <button
+      onClick={handleExitFullscreen}
+      className="fixed bottom-2 left-2 w-8 h-8 bg-transparent hover:bg-gray-800/20 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-800 transition-all duration-200 z-50"
+      title="Kilépés a teljes képernyőből"
+    >
+      <FaCompress className="w-4 h-4" />
+    </button>
+  );
+};
+
+export default FullscreenExitButton; 
+
+
+================================================================================
+File: src/components/OrderHistory.js
+================================================================================
+
+import React, { useEffect } from 'react';
+import { useFirebase } from '../hooks/useFirebase';
+
+const OrderHistory = () => {
+  const { todayOrders, loadTodayOrders, loading, error } = useFirebase();
+
+  useEffect(() => {
+    loadTodayOrders();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-4">
+        <div className="animate-pulse space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-24 bg-magyar-barna/10 rounded-magyar"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 bg-red-100 text-red-700 rounded-magyar">
+        Hiba történt a rendelések betöltése során
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 space-y-4">
+      <h2 className="text-magyar-xl font-bold text-magyar-barna mb-6">
+        Mai rendelések ({todayOrders.length})
+      </h2>
+
+      <div className="bg-csarda-feher-alap rounded-xl shadow-lg p-6">
+        <h2 className="font-bree text-2xl text-csarda-barna-sotet mb-6">Rendelési előzmények</h2>
+        
+        <div className="space-y-6">
+          {todayOrders.map((order) => (
+            <div key={order.id} className="border-2 border-csarda-barna-vilagos rounded-lg p-4">
+              <div className="flex justify-between items-center mb-4">
+                <span className="font-lora text-csarda-barna-kozep">
+                  {new Date(order.createdAt.seconds * 1000).toLocaleDateString('hu-HU')}
+                </span>
+                <span className="font-bree text-lg text-csarda-piros-mely">
+                  £{order.total.toFixed(2)}
+                </span>
+              </div>
+              
+              <div className="space-y-2">
+                {order.items.map((item) => (
+                  <div key={item.id} className="flex justify-between items-center">
+                    <div className="font-lora text-csarda-barna-sotet">
+                      {item.quantity}x {item.name}
+                    </div>
+                    <div className="font-bree text-csarda-barna-kozep">
+                      £{(item.price * item.quantity).toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {todayOrders.length === 0 && (
+        <div className="text-center text-gray-500 py-8">
+          Még nincsenek mai rendelések
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default OrderHistory; 
+
+
+================================================================================
+File: src/components/PinScreen.js
+================================================================================
+
+import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
+
+const PinScreen = ({ onSubmit }) => {
+  const [pin, setPin] = useState('');
+  const [error, setError] = useState('');
+
+  const handleNumberClick = (number) => {
+    if (pin.length < 6) {
+      setPin(prev => prev + number);
+      setError('');
+    }
+  };
+
+  const handleDelete = () => {
+    setPin(prev => prev.slice(0, -1));
+    setError('');
+  };
+
+  const handleSubmit = async () => {
+    if (pin === '351351') {
+      await onSubmit(pin);
+      setPin('');
+      setError('');
+    } else {
+      setError('Hibás PIN kód!');
+      toast.error('Hibás PIN kód!');
+      setPin('');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-csarda-barna-sotet/90 flex items-center justify-center p-4">
+      <div className="bg-csarda-feher-alap rounded-2xl p-6 w-full max-w-md shadow-xl border-4 border-csarda-barna-vilagos">
+        <h2 className="text-2xl font-bree text-center text-csarda-barna-sotet mb-8">
+          Adja meg a PIN kódot
+        </h2>
+
+        {error && (
+          <div className="mb-6 text-center text-csarda-piros-mely font-bree">
+            {error}
+          </div>
+        )}
+
+        <div className="flex justify-center mb-8">
+          {[1,2,3,4,5,6].map((_, i) => (
+            <div
+              key={i}
+              className={`w-4 h-4 mx-2 rounded-full border-2 border-csarda-barna-kozep ${
+                i < pin.length ? 'bg-csarda-barna-sotet' : 'bg-csarda-feher-tort'
+              }`}
+            />
+          ))}
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          {[1,2,3,4,5,6,7,8,9].map(number => (
+            <button
+              key={number}
+              onClick={() => handleNumberClick(number)}
+              className="aspect-square rounded-xl bg-csarda-feher-tort text-csarda-barna-sotet text-2xl font-bree border-2 border-csarda-barna-kozep hover:bg-csarda-barna-vilagos/20 transition-colors"
+            >
+              {number}
+            </button>
+          ))}
+          <button
+            onClick={handleDelete}
+            className="aspect-square rounded-xl bg-csarda-piros-mely text-csarda-feher-alap text-xl font-bree border-2 border-csarda-piros-vilagos hover:bg-csarda-piros-vilagos transition-colors"
+          >
+            ←
+          </button>
+          <button
+            onClick={() => handleNumberClick(0)}
+            className="aspect-square rounded-xl bg-csarda-feher-tort text-csarda-barna-sotet text-2xl font-bree border-2 border-csarda-barna-kozep hover:bg-csarda-barna-vilagos/20 transition-colors"
+          >
+            0
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={pin.length !== 6}
+            className="aspect-square rounded-xl bg-csarda-zold-palack text-csarda-feher-alap text-xl font-bree border-2 border-csarda-zold-kakukkfu hover:bg-csarda-zold-kakukkfu disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            ✓
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PinScreen; 
+
+
+================================================================================
+File: src/components/ProductGrid.js
+================================================================================
+
+import React from 'react';
+
+const ProductGrid = ({ products, onAddToCart }) => {
+  // Csak az első 9 terméket jelenítjük meg
+  const displayedProducts = products.slice(0, 9);
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-csarda-barna-kozep text-xl font-lora">
+          Nincsenek termékek ebben a kategóriában
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="
+      grid
+      grid-cols-3
+      grid-rows-3
+      gap-3
+      p-3
+      h-full
+      auto-rows-fr
+    ">
+      {displayedProducts.map((product) => (
+        <button
+          key={product.id}
+          className="
+            bg-white
+            rounded-xl
+            shadow-sm
+            hover:shadow-md
+            transition-all
+            duration-200
+            border-2
+            border-csarda-barna-vilagos
+            hover:border-csarda-piros-mely
+            flex
+            flex-col
+            overflow-hidden
+            relative
+            group
+            p-3
+            min-h-0
+          "
+          onClick={() => onAddToCart(product)}
+        >
+          <div className="
+            flex-1
+            flex
+            flex-col
+            justify-between
+            w-full
+            min-h-0
+          ">
+            <div>
+              <h3 className="
+                text-xl
+                font-bree
+                text-csarda-barna-sotet
+                leading-tight
+                mb-2
+              ">
+                {product.nev}
+              </h3>
+              {product.leiras && (
+                <p className="
+                  text-sm
+                  text-csarda-barna-vilagos
+                  line-clamp-2
+                  group-hover:line-clamp-none
+                  transition-all
+                  duration-200
+                ">
+                  {product.leiras}
+                </p>
+              )}
+            </div>
+            
+            <div className="
+              flex
+              justify-between
+              items-center
+              mt-2
+            ">
+              <p className="
+                text-xl
+                font-bold
+                text-csarda-piros-mely
+              ">
+                £{product.ar.toFixed(2)}
+              </p>
+              <span className="
+                text-sm
+                px-3
+                py-1
+                bg-csarda-barna-vilagos
+                bg-opacity-10
+                rounded-full
+                text-csarda-barna-sotet
+                font-medium
+              ">
+                {product.kategoria}
+              </span>
+            </div>
+          </div>
+        </button>
+      ))}
+    </div>
+  );
+};
+
+export default ProductGrid; 
+
+
+================================================================================
+File: src/data/menu.js
+================================================================================
+
+import menuData from './menu.json';
+
+// Exportáljuk az eredeti magyar mezőnevekkel
+export const menu = menuData.termekek.map(item => ({
+  id: item.id,
+  nev: item.nev,
+  ar: item.ar,
+  kategoria: item.kategoria,
+  leiras: item.leiras
+}));
+
+export default menu;
+
+export const menuItems = menu; 
+
+
+================================================================================
+File: src/data/menu.json
+================================================================================
+
+{
+  "termekek": [
+    {
+      "id": "langos-sima",
+      "nev": "Sima lángos",
+      "ar": 3.50,
+      "kategoria": "langos",
+      "leiras": "Frissen sült lángos"
+    },
+    {
+      "id": "langos-tejfolos",
+      "nev": "Tejfölös lángos",
+      "ar": 4.00,
+      "kategoria": "langos",
+      "leiras": "Lángos tejföllel"
+    },
+    {
+      "id": "langos-sajtos",
+      "nev": "Sajtos lángos",
+      "ar": 4.00,
+      "kategoria": "langos",
+      "leiras": "Lángos reszelt sajttal"
+    },
+    {
+      "id": "langos-sajtos-tejfolos",
+      "nev": "Sajtos-tejfölös lángos",
+      "ar": 4.50,
+      "kategoria": "langos",
+      "leiras": "Lángos sajttal és tejföllel"
+    },
+    {
+      "id": "langos-bolognai",
+      "nev": "Bolognai lángos",
+      "ar": 6.50,
+      "kategoria": "langos",
+      "leiras": "Lángos bolognai raguval"
+    },
+    {
+      "id": "palacsinta",
+      "nev": "Palacsinta",
+      "ar": 1.00,
+      "kategoria": "palacsinta",
+      "leiras": "Klasszikus palacsinta"
+    },
+    {
+      "id": "hotdog-retro",
+      "nev": "Retro hotdog",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Klasszikus retro hotdog"
+    },
+    {
+      "id": "szendvics-meleg-husos",
+      "nev": "Húsos meleg szendvics",
+      "ar": 3.00,
+      "kategoria": "szendvics",
+      "leiras": "Meleg szendvics hússal"
+    },
+    {
+      "id": "szendvics-panini",
+      "nev": "Panini szendvics",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Olasz stílusú panini"
+    },
+    {
+      "id": "szendvics-hideg-vega",
+      "nev": "Vega hideg szendvics",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Vegetáriánus hideg szendvics"
+    },
+    {
+      "id": "szendvics-hideg-husos",
+      "nev": "Hideg szendvics (sonkás / szalámis)",
+      "ar": 2.50,
+      "kategoria": "szendvics",
+      "leiras": "Választható sonkás vagy szalámis hideg szendvics"
+    },
+    {
+      "id": "szendvics-szarvasszalamis",
+      "nev": "Szarvasszalámis szendvics",
+      "ar": 3.00,
+      "kategoria": "szendvics",
+      "leiras": "Szendvics szarvasszalámival"
+    },
+    {
+      "id": "zsomle-rantott-csirke",
+      "nev": "Rántott csirkemelles zsömle",
+      "ar": 3.50,
+      "kategoria": "szendvics",
+      "leiras": "Zsömle rántott csirkemellel"
+    },
+    {
+      "id": "rantotthus-krumplival",
+      "nev": "Rántott hús sült krumplival",
+      "ar": 6.50,
+      "kategoria": "foetel",
+      "leiras": "Rántott hús sült krumpli körettel"
+    },
+    {
+      "id": "tepsis-sajtos-karaj",
+      "nev": "Tepsis sajtos karaj vegyes körettel, palacsintával",
+      "ar": 9.50,
+      "kategoria": "foetel",
+      "leiras": "Tepsis sajtos karaj vegyes körettel és desszert palacsintával"
+    },
+    {
+      "id": "sajtos-karaj",
+      "nev": "Sajtos karaj vegyes körettel",
+      "ar": 9.00,
+      "kategoria": "foetel",
+      "leiras": "Sajtos karaj választható körettel"
+    },
+    {
+      "id": "gyerekmenu",
+      "nev": "Gyerekmenü (karaj, köret, palacsinta)",
+      "ar": 6.50,
+      "kategoria": "foetel",
+      "leiras": "Gyerekmenü karajjal, körettel és palacsintával"
+    },
+    {
+      "id": "sultkrumpli",
+      "nev": "Sült krumpli",
+      "ar": 2.00,
+      "kategoria": "foetel",
+      "leiras": "Frissen sült hasábburgonya"
+    },
+    {
+      "id": "sultkrumpli-sajtos",
+      "nev": "Sült krumpli + Sajt",
+      "ar": 2.50,
+      "kategoria": "foetel",
+      "leiras": "Sült krumpli reszelt sajttal"
+    },
+    {
+      "id": "jegkrem-pohar-csoki",
+      "nev": "Csokis kehely",
+      "ar": 2.50,
+      "kategoria": "jegkrem",
+      "leiras": "Csokis fagylalt kehely, tejszínhabbal és öntettel"
+    },
+    {
+      "id": "jegkrem-pohar-vanilia",
+      "nev": "Vaníliás kehely",
+      "ar": 2.50,
+      "kategoria": "jegkrem",
+      "leiras": "Vaníliás fagylalt kehely, tejszínhabbal és öntettel"
+    },
+    {
+      "id": "jegkrem-pohar-epres",
+      "nev": "Epres kehely",
+      "ar": 2.50,
+      "kategoria": "jegkrem",
+      "leiras": "Epres fagylalt kehely, tejszínhabbal és öntettel"
+    },
+    {
+      "id": "jegkrem-gomboc",
+      "nev": "Fagylaltgombóc",
+      "ar": 0.80,
+      "kategoria": "jegkrem",
+      "leiras": "Választható ízű fagylaltgombóc (vanília, csoki, eper, puncs)"
+    },
+    {
+      "id": "jegkrem-nyari",
+      "nev": "Nyári fagyi",
+      "ar": 2.00,
+      "kategoria": "jegkrem",
+      "leiras": "Három gombóc fagyi, választható ízekben"
+    },
+    {
+      "id": "jegkrem-mega",
+      "nev": "Mega kehely",
+      "ar": 3.50,
+      "kategoria": "jegkrem",
+      "leiras": "Öt gombóc fagyi, tejszínhab, öntet, díszítés"
+    },
+    {
+      "id": "udito",
+      "nev": "Üdítő (Sió, Cola, Rango, Fanta)",
+      "ar": 1.00,
+      "kategoria": "ital",
+      "leiras": "Választható üdítőitalok"
+    },
+    {
+      "id": "kave-tea",
+      "nev": "Kávé / tea",
+      "ar": 1.00,
+      "kategoria": "ital",
+      "leiras": "Választható kávé vagy tea"
+    },
+    {
+      "id": "ice-tea",
+      "nev": "Ice tea",
+      "ar": 1.20,
+      "kategoria": "ital",
+      "leiras": "Jeges tea"
+    },
+    {
+      "id": "viz",
+      "nev": "Víz (mentes / savas)",
+      "ar": 1.00,
+      "kategoria": "ital",
+      "leiras": "Választható mentes vagy szénsavas víz"
+    }
+  ]
+} 
+
+
+================================================================================
+File: src/hooks/useFullscreen.js
+================================================================================
+
+import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'react-hot-toast';
+import screenfull from 'screenfull';
+
+export const useFullscreen = () => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [hasShownWarning, setHasShownWarning] = useState(false);
+
+  // Teljes képernyő állapot figyelése
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const fullscreenActive = screenfull.isFullscreen;
+      setIsFullscreen(fullscreenActive);
+      
+      // Csak egyszer mutatjuk a figyelmeztetést munkamenetenként
+      if (!fullscreenActive && !hasShownWarning) {
+        toast('Az alkalmazás teljes képernyőn is használható.', {
+          duration: 3000,
+          position: 'bottom-center',
+          icon: '💡',
+        });
+        setHasShownWarning(true);
+      }
+    };
+
+    if (screenfull.isEnabled) {
+      screenfull.on('change', handleFullscreenChange);
+      return () => {
+        if (screenfull.isEnabled) {
+          screenfull.off('change', handleFullscreenChange);
+        }
+      };
+    }
+  }, [hasShownWarning]);
+
+  // Belépés teljes képernyőbe
+  const enterFullscreen = useCallback(async () => {
+    try {
+      if (screenfull.isEnabled && !screenfull.isFullscreen) {
+        await screenfull.request();
+      }
+    } catch (error) {
+      console.error('Hiba a teljes képernyőbe lépéskor:', error);
+    }
+  }, []);
+
+  // Kilépés teljes képernyőből
+  const exitFullscreen = useCallback(async () => {
+    try {
+      if (screenfull.isEnabled && screenfull.isFullscreen) {
+        await screenfull.exit();
+      }
+    } catch (error) {
+      console.error('Hiba a teljes képernyőből való kilépéskor:', error);
+    }
+  }, []);
+
+  // Automatikus újrapróbálkozás teljes képernyővel - csak egyszer próbálkozunk
+  const retryFullscreen = useCallback(async () => {
+    if (screenfull.isEnabled && !screenfull.isFullscreen && !hasShownWarning) {
+      await enterFullscreen();
+    }
+  }, [enterFullscreen, hasShownWarning]);
+
+  // Ellenőrizzük, hogy az eszköz támogatja-e a teljes képernyőt
+  const isFullscreenSupported = screenfull.isEnabled;
+
+  return {
+    isFullscreen,
+    enterFullscreen,
+    exitFullscreen,
+    retryFullscreen,
+    isFullscreenSupported
+  };
+}; 
+
+
+================================================================================
+File: src/hooks/useFirebase.js
+================================================================================
+
+import { useState, useEffect } from 'react';
+import { 
+  saveOrder, 
+  getTodayOrders, 
+  syncProducts, 
+  getCategories 
+} from '../services/firebaseService';
+
+export const useFirebase = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [todayOrders, setTodayOrders] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  // Rendelés mentése
+  const handleSaveOrder = async (orderData) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await saveOrder(orderData);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return result.orderId;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Mai rendelések betöltése
+  const loadTodayOrders = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const orders = await getTodayOrders();
+      setTodayOrders(orders);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Termékek szinkronizálása
+  const handleSyncProducts = async (products) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await syncProducts(products);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Kategóriák betöltése
+  const loadCategories = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const cats = await getCategories();
+      setCategories(cats);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Komponens betöltésekor kategóriák lekérése
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  return {
+    loading,
+    error,
+    todayOrders,
+    categories,
+    saveOrder: handleSaveOrder,
+    syncProducts: handleSyncProducts,
+    loadTodayOrders,
+    loadCategories
+  };
+}; 
+
+
+================================================================================
+File: src/hooks/useAuth.js
+================================================================================
+
+import { useState, useEffect } from 'react';
+
+export const useAuth = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Itt lehet implementálni a tényleges authentikációs logikát
+  // Például PIN kód ellenőrzése, session kezelés, stb.
+  
+  // Példa: localStorage-ból olvassuk ki a bejelentkezési állapotot
+  useEffect(() => {
+    const checkAuth = () => {
+      const authStatus = localStorage.getItem('isAuthenticated') === 'true';
+      setIsAuthenticated(authStatus);
+    };
+
+    // Kezdeti ellenőrzés
+    checkAuth();
+
+    // Figyeljük a storage változásait
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+
+  const login = () => {
+    localStorage.setItem('isAuthenticated', 'true');
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    localStorage.setItem('isAuthenticated', 'false');
+    setIsAuthenticated(false);
+  };
+
+  return {
+    isAuthenticated,
+    login,
+    logout
+  };
+}; 
+
+
+================================================================================
+File: src/services/firebaseService.js
+================================================================================
+
+import { db } from '../firebase';
+import { 
+  collection, 
+  addDoc, 
+  serverTimestamp,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  doc,
+  updateDoc,
+  deleteDoc,
+  writeBatch
+} from 'firebase/firestore';
+import {
+  toFirebaseOrder,
+  toUIOrder,
+  toFirebaseItem,
+  toUIItem
+} from '../utils/dataConverters';
+
+// Rendelés mentése
+export const saveOrder = async (orderData) => {
+  try {
+    // Ellenőrizzük, hogy van-e termék a kosárban
+    if (!orderData.items || orderData.items.length === 0) {
+      throw new Error('A kosár üres');
+    }
+
+    const ordersRef = collection(db, 'orders');
+    const firebaseOrder = toFirebaseOrder({
+      ...orderData,
+      timestamp: serverTimestamp()
+    });
+
+    const docRef = await addDoc(ordersRef, firebaseOrder);
+    return { 
+      success: true, 
+      orderId: docRef.id,
+      message: 'Rendelés sikeresen mentve'
+    };
+
+  } catch (error) {
+    console.error('Hiba a rendelés mentése során:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Ismeretlen hiba történt a rendelés mentése során',
+      details: error
+    };
+  }
+};
+
+// Rendelések lekérése
+export const getOrders = async () => {
+  try {
+    const q = query(
+      collection(db, 'orders'),
+      orderBy('timestamp', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => toUIOrder({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error('Hiba a rendelések lekérése során:', error);
+    return [];
+  }
+};
+
+// Rendelés státuszának frissítése
+export const updateOrderStatus = async (orderId, status) => {
+  // Ellenőrizzük, hogy érvényes státusz-e
+  const validStatuses = ['new', 'processing', 'completed', 'cancelled'];
+  if (!validStatuses.includes(status)) {
+    return { 
+      success: false, 
+      error: 'Érvénytelen státusz. Lehetséges értékek: ' + validStatuses.join(', ')
+    };
+  }
+
+  try {
+    const orderRef = doc(db, 'orders', orderId);
+    await updateDoc(orderRef, { status });
+    return { success: true };
+  } catch (error) {
+    console.error('Hiba a rendelés státuszának frissítése során:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Rendelés törlése
+export const deleteOrder = async (orderId) => {
+  try {
+    const orderRef = doc(db, 'orders', orderId);
+    await deleteDoc(orderRef);
+    return { success: true };
+  } catch (error) {
+    console.error('Hiba a rendelés törlése során:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Mai rendelések lekérése
+export const getTodayOrders = async () => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const q = query(
+      collection(db, 'orders'),
+      where('timestamp', '>=', today),
+      orderBy('timestamp', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => toUIOrder({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error('Hiba a mai rendelések lekérése során:', error);
+    return [];
+  }
+};
+
+// Rendelés ellenőrzése duplikáció ellen
+export const checkDuplicateOrder = async (orderData, timeWindow = 60000) => {
+  try {
+    const ordersRef = collection(db, 'orders');
+    const timeThreshold = new Date(Date.now() - timeWindow); // 1 perces időablak
+
+    const q = query(
+      ordersRef,
+      where('timestamp', '>=', timeThreshold),
+      where('total', '==', orderData.total)
+    );
+
+    const querySnapshot = await getDocs(q);
+    const possibleDuplicates = querySnapshot.docs.filter(doc => {
+      const order = doc.data();
+      // Ellenőrizzük a tételek egyezését
+      return order.items.length === orderData.items.length &&
+        order.items.every((item, index) => 
+          item.id === orderData.items[index].id &&
+          item.mennyiseg === orderData.items[index].mennyiseg
+        );
+    });
+
+    return possibleDuplicates.length > 0;
+
+  } catch (error) {
+    console.error('Hiba a duplikáció ellenőrzése során:', error);
+    return false; // Hiba esetén engedjük a mentést
+  }
+};
+
+// Menü szinkronizálása
+export const syncMenu = async (menuItems) => {
+  try {
+    const batch = writeBatch(db);
+    const menuRef = collection(db, 'menu');
+
+    // Konvertáljuk a tételeket Firebase formátumra
+    const firebaseItems = menuItems.map(toFirebaseItem);
+
+    // Töröljük a régi menüt
+    const oldMenu = await getDocs(menuRef);
+    oldMenu.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    // Új menü hozzáadása
+    firebaseItems.forEach((item) => {
+      const docRef = doc(menuRef);
+      batch.set(docRef, item);
+    });
+
+    await batch.commit();
+    return { success: true };
+  } catch (error) {
+    console.error('Hiba a menü szinkronizálása során:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Kategóriák lekérése
+export const getCategories = async () => {
+  try {
+    const menuRef = collection(db, 'menu');
+    const querySnapshot = await getDocs(menuRef);
+    const categories = new Set();
+
+    querySnapshot.forEach((doc) => {
+      const item = doc.data();
+      if (item.category) {
+        categories.add(item.category);
+      }
+    });
+
+    return Array.from(categories);
+  } catch (error) {
+    console.error('Hiba a kategóriák lekérése során:', error);
+    throw error;
+  }
+}; 
+
+
+================================================================================
+File: src/scripts/initFirebase.js
+================================================================================
+
+import { db } from '../firebase';
+import { collection, addDoc, writeBatch, doc } from 'firebase/firestore';
+import { menuItems } from '../data/menu';
+
+const initializeFirebase = async () => {
+  try {
+    const batch = writeBatch(db);
+    const productsRef = collection(db, 'products');
+
+    // Termékek feltöltése
+    for (const item of menuItems) {
+      const docRef = doc(productsRef);
+      batch.set(docRef, {
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        category: item.category,
+        description: item.description
+      });
+    }
+
+    // Minta rendelések létrehozása
+    const ordersRef = collection(db, 'orders');
+    const sampleOrder = {
+      items: [
+        {
+          id: 'langos-1',
+          name: 'Sima lángos',
+          price: 800,
+          quantity: 2
+        },
+        {
+          id: 'szendvics-1',
+          name: 'Sonkás szendvics',
+          price: 1200,
+          quantity: 1
+        }
+      ],
+      total: 2800,
+      status: 'new',
+      createdAt: new Date(),
+      paymentMethod: 'cash'
+    };
+
+    await addDoc(ordersRef, sampleOrder);
+    await batch.commit();
+
+    console.log('Firebase adatbázis sikeresen inicializálva!');
+  } catch (error) {
+    console.error('Hiba az adatbázis inicializálása során:', error);
+  }
+};
+
+// Script futtatása
+initializeFirebase(); 
+
+
+================================================================================
+File: src/utils/dataConverters.js
+================================================================================
+
+// Magyar-angol konverzió a Firebase-hez
+export const toFirebaseItem = (magyarItem) => ({
+  id: magyarItem.id,
+  name: magyarItem.nev,
+  price: magyarItem.ar,
+  quantity: magyarItem.mennyiseg,
+  category: magyarItem.kategoria,
+  description: magyarItem.leiras
+});
+
+// Angol-magyar konverzió a felhasználói felülethez
+export const toUIItem = (firebaseItem) => ({
+  id: firebaseItem.id,
+  nev: firebaseItem.name || firebaseItem.nev, // Visszafelé kompatibilitás
+  ar: firebaseItem.price || firebaseItem.ar,   // Visszafelé kompatibilitás
+  mennyiseg: firebaseItem.quantity || firebaseItem.mennyiseg,
+  kategoria: firebaseItem.category || firebaseItem.kategoria,
+  leiras: firebaseItem.description || firebaseItem.leiras
+});
+
+// Rendelés konvertálása Firebase formátumra
+export const toFirebaseOrder = (magyarOrder) => ({
+  items: magyarOrder.items.map(toFirebaseItem),
+  total: magyarOrder.total,
+  status: 'new',
+  timestamp: magyarOrder.timestamp,
+  paymentMethod: magyarOrder.paymentMethod
+});
+
+// Rendelés konvertálása UI formátumra
+export const toUIOrder = (firebaseOrder) => ({
+  items: firebaseOrder.items.map(toUIItem),
+  total: firebaseOrder.total,
+  status: firebaseOrder.status,
+  timestamp: firebaseOrder.timestamp,
+  paymentMethod: firebaseOrder.paymentMethod
+});
+
+// Státusz fordítások
+export const statusTranslations = {
+  new: 'Új',
+  processing: 'Feldolgozás alatt',
+  completed: 'Teljesítve',
+  cancelled: 'Törölve'
+};
+
+// Kategória fordítások
+export const categoryTranslations = {
+  langos: 'Lángos',
+  szendvics: 'Szendvicsek',
+  foetel: 'Főételek',
+  desszert: 'Desszertek',
+  ital: 'Italok'
+}; 
+
+
+================================================================================
+File: src/utils/saveOrder.js
+================================================================================
+
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
+
+export const saveOrder = async (items, total) => {
+  try {
+    const orderData = {
+      items: items.map(item => ({
+        id: item.id,
+        nev: item.nev,
+        ar: item.ar,
+        mennyiseg: item.mennyiseg
+      })),
+      total,
+      status: 'new',
+      createdAt: serverTimestamp()
+    };
+
+    const docRef = await addDoc(collection(db, 'orders'), orderData);
+    return { success: true, orderId: docRef.id };
+  } catch (error) {
+    console.error('Hiba a rendelés mentése közben:', error);
+    return { success: false, error: error.message };
+  }
+}; 
+
+
+================================================================================
+File: src/App.css
+================================================================================
+
+/* Alap stílusok */
+body {
+  @apply bg-csarda-feher-tort;
+}
+
+/* Scrollbar testreszabása */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-csarda-feher-alap;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-csarda-barna-vilagos rounded-full;
+}
+
+/* Animációk */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 
+
+
+================================================================================
+File: src/App.js
+================================================================================
+
+import React, { useState, useEffect, useCallback } from 'react';
+import './App.css';
+import CategoryBar from './components/CategoryBar';
+import ProductGrid from './components/ProductGrid';
+import CartSidebar from './components/CartSidebar';
+import PinScreen from './components/PinScreen';
+import { menu } from './data/menu';
+import { saveOrder } from './services/firebaseService';
+import { toUIItem } from './utils/dataConverters';
+import { Toaster } from 'react-hot-toast';
+import { useFullscreen } from './hooks/useFullscreen';
+import FullscreenExitButton from './components/FullscreenExitButton';
+import { useAuth } from './hooks/useAuth';
+
+// Google Fonts betöltése
+const fontLink = document.createElement('link');
+fontLink.href = 'https://fonts.googleapis.com/css2?family=Bree+Serif:wght@400;700&family=Lora:wght@400;500;600;700&display=swap';
+fontLink.rel = 'stylesheet';
+document.head.appendChild(fontLink);
+
+const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 perc milliszekundumban
+
+function App() {
+  const { isAuthenticated, login } = useAuth();
+  const { isFullscreen, enterFullscreen, retryFullscreen } = useFullscreen();
+  const [selectedCategory, setSelectedCategory] = useState('langos');
+  const [cartItems, setCartItems] = useState([]);
+  const [isLocked, setIsLocked] = useState(true);
+  const [inactivityTimer, setInactivityTimer] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Toast megjelenítése
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  // Inaktivitás figyelő visszaállítása
+  const resetInactivityTimer = useCallback(() => {
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    
+    const newTimer = setTimeout(() => {
+      setCartItems([]); // Kosár ürítése
+      setIsLocked(true); // PIN képernyő megjelenítése
+    }, INACTIVITY_TIMEOUT);
+    
+    setInactivityTimer(newTimer);
+  }, [inactivityTimer]);
+
+  // Eseményfigyelők beállítása
+  useEffect(() => {
+    const events = ['click', 'touchstart', 'keydown'];
+    
+    const handleUserActivity = () => {
+      resetInactivityTimer();
+    };
+    
+    events.forEach(event => {
+      window.addEventListener(event, handleUserActivity);
+    });
+
+    // Kezdeti időzítő beállítása
+    resetInactivityTimer();
+
+    // Cleanup
+    return () => {
+      if (inactivityTimer) clearTimeout(inactivityTimer);
+      events.forEach(event => {
+        window.removeEventListener(event, handleUserActivity);
+      });
+    };
+  }, [resetInactivityTimer]);
+
+  // Mindig próbáljuk meg a teljes képernyőt, ha nincs
+  useEffect(() => {
+    if (!isFullscreen) {
+      const timer = setTimeout(() => {
+        retryFullscreen();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isFullscreen, retryFullscreen]);
+
+  // PIN kód ellenőrzése és belépés
+  const handlePinSubmit = async (pin) => {
+    if (pin === '351351') {
+      login(); // Bejelentkezés
+      setIsLocked(false); // Feloldás
+      await enterFullscreen(); // Teljes képernyő újra
+    }
+  };
+
+  // Szűrt termékek a kiválasztott kategória alapján
+  const filteredProducts = menu.filter(
+    (item) => item.kategoria === selectedCategory
+  ).map(toUIItem);
+
+  // Kosárba helyezés kezelése
+  const handleAddToCart = (item) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((cartItem) => cartItem.id === item.id);
+      if (existingItem) {
+        return prevItems.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, mennyiseg: cartItem.mennyiseg + 1 }
+            : cartItem
+        );
+      }
+      return [...prevItems, { ...item, mennyiseg: 1 }];
+    });
+    showToast(`${item.nev} a kosárba került!`);
+  };
+
+  // Mennyiség módosítás kezelése
+  const handleQuantityChange = (id, newQuantity) => {
+    if (newQuantity < 1) {
+      handleRemoveFromCart(id);
+      return;
+    }
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, mennyiseg: newQuantity } : item
+      )
+    );
+  };
+
+  // Tétel törlése a kosárból
+  const handleRemoveFromCart = (id) => {
+    const itemToRemove = cartItems.find(item => item.id === id);
+    if (itemToRemove) {
+      setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+      showToast(`${itemToRemove.nev} törölve a kosárból!`, 'warning');
+    }
+  };
+
+  // Kosár ürítése
+  const handleClearCart = () => {
+    setCartItems([]);
+    showToast('A kosár kiürítve!', 'warning');
+  };
+
+  // Fizetés kezelése
+  const handlePayment = async () => {
+    if (cartItems.length === 0) {
+      showToast('A kosár üres!', 'error');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const total = cartItems.reduce((sum, item) => sum + item.ar * item.mennyiseg, 0);
+      const orderData = {
+        items: cartItems,
+        total: total,
+        paymentMethod: 'cash'
+      };
+
+      const result = await saveOrder(orderData);
+      
+      if (result.success) {
+        setCartItems([]);
+        showToast('Rendelés sikeresen mentve!', 'success');
+      } else {
+        throw new Error(result.error || 'Hiba történt a mentés során');
+      }
+    } catch (error) {
+      console.error('Hiba a rendelés mentése során:', error);
+      showToast(error.message || 'Hiba történt a rendelés mentése során!', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="
+      h-screen
+      flex
+      flex-col
+      font-lora
+      bg-csarda-feher-alap
+      overflow-hidden
+    ">
+      {/* Fejléc */}
+      <header className="
+        bg-csarda-barna-sotet
+        text-csarda-feher-alap
+        py-4
+        border-b-3
+        border-csarda-piros-mely
+        relative
+      ">
+        <div className="
+          absolute
+          inset-0
+          bg-csarda-pattern
+          opacity-10
+          mix-blend-overlay
+        "></div>
+        <h1 className="
+          text-4xl
+          text-center
+          font-bree
+          tracking-wide
+          relative
+          flex
+          items-center
+          justify-center
+          gap-3
+        ">
+          <span className="text-csarda-sarga-szalma">Hagyma</span>
+          <span className="text-csarda-piros-vilagos">iPOS</span>
+        </h1>
+      </header>
+
+      {/* Fő tartalom */}
+      <main className="flex flex-1 overflow-hidden">
+        {/* Bal oldali panel: Kategóriák és termékek */}
+        <div className="
+          flex-1
+          flex
+          flex-col
+          h-full
+          max-w-[calc(100%-24rem)]
+          bg-csarda-feher-tort
+          relative
+        ">
+          {/* Kategória sáv */}
+          <div className="
+            h-16
+            border-b-2
+            border-csarda-barna-vilagos
+            bg-csarda-feher-alap
+          ">
+            <CategoryBar
+              selectedCategory={selectedCategory}
+              onSelect={setSelectedCategory}
+            />
+          </div>
+          
+          {/* Termékek rács */}
+          <div className="
+            flex-1
+            overflow-hidden
+            p-4
+            bg-csarda-feher-tort
+          ">
+            <ProductGrid
+              products={filteredProducts}
+              onAddToCart={handleAddToCart}
+            />
+          </div>
+
+          {/* Toast üzenetek az alsó sávban */}
+          {toast && (
+            <div className="
+              absolute
+              bottom-0
+              left-0
+              right-0
+              flex
+              justify-center
+              p-4
+              pointer-events-none
+            ">
+              <div className={`
+                px-6
+                py-3
+                rounded-xl
+                font-bree
+                text-xl
+                shadow-lg
+                border-2
+                animate-fade-in-up
+                ${
+                  toast.type === 'success' 
+                    ? 'bg-csarda-zold-palack text-white border-csarda-zold-kakukkfu'
+                    : toast.type === 'error'
+                    ? 'bg-csarda-piros-mely text-white border-csarda-piros-vilagos'
+                    : 'bg-csarda-barna-sotet text-white border-csarda-barna-vilagos'
+                }
+              `}>
+                {toast.message}
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {/* Jobb oldali kosár */}
+        <div className="
+          w-96
+          bg-fa-pattern
+          bg-csarda-barna-vilagos
+          bg-opacity-10
+          border-l-2
+          border-csarda-barna-vilagos
+          flex
+          flex-col
+        ">
+          <CartSidebar
+            items={cartItems}
+            onQuantityChange={handleQuantityChange}
+            onRemove={handleRemoveFromCart}
+            onClear={handleClearCart}
+            onPayment={handlePayment}
+            isLoading={isLoading}
+          />
+        </div>
+      </main>
+      {isLocked ? (
+        <>
+          <PinScreen onSubmit={handlePinSubmit} />
+          <FullscreenExitButton onExit={retryFullscreen} />
+        </>
+      ) : (
+        <>
+          <FullscreenExitButton onExit={retryFullscreen} />
+        </>
+      )}
+      <Toaster />
+    </div>
+  );
+}
+
+export default App; 
+
+
+================================================================================
+File: src/App.tsx
+================================================================================
+
+import React, { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { useFullscreen } from './hooks/useFullscreen';
+import FullscreenExitButton from './components/FullscreenExitButton';
+import { useAuth } from './hooks/useAuth'; // Feltételezve, hogy van ilyen hook
+
+const App: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  const { isFullscreen, enterFullscreen, retryFullscreen } = useFullscreen();
+
+  // PIN megadása után vagy induláskor teljes képernyő
+  useEffect(() => {
+    // Ha már be van jelentkezve vagy helyes PIN után
+    if (isAuthenticated) {
+      enterFullscreen();
+    }
+  }, [isAuthenticated, enterFullscreen]);
+
+  // Ha kilép teljes képernyőből, próbáljuk újra 2 másodperc után
+  useEffect(() => {
+    if (!isFullscreen && isAuthenticated) {
+      const timer = setTimeout(() => {
+        retryFullscreen();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isFullscreen, isAuthenticated, retryFullscreen]);
+
+  return (
+    <div className="app-container">
+      {/* Meglévő komponensek */}
+      {/* Teljes képernyő kilépő gomb */}
+      <FullscreenExitButton onExit={retryFullscreen} />
+      
+      {/* Toast üzenetek megjelenítése */}
+      <Toaster />
+    </div>
+  );
+};
+
+export default App; 
+
+
+================================================================================
+File: src/firebase.js
+================================================================================
+
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDHV6P5bJt_4OvOgwDuDKQRBBguEmgHpNY",
+  authDomain: "hagyma-ipos.firebaseapp.com",
+  projectId: "hagyma-ipos",
+  storageBucket: "hagyma-ipos.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef0123456789"
+};
+
+// Firebase inicializálása
+const app = initializeApp(firebaseConfig);
+
+// Firestore példány létrehozása
+export const db = getFirestore(app); 
+
+
+================================================================================
+File: src/index.css
+================================================================================
+
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif:wght@400;700&family=Lora:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+
+
+================================================================================
+File: src/index.js
+================================================================================
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+); 
+
+
+================================================================================
+File: tailwind.config.js
+================================================================================
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'csarda': {
+          'barna': {
+            'sotet': '#6B3E26',    // Sötét dió
+            'vilagos': '#B99A78',  // Fakó tölgy
+            'kozep': '#8C6046'     // Égetett barna
+          },
+          'feher': {
+            'alap': '#FFF8F0',     // Vajfehér
+            'tort': '#F7F3EA'      // Törtfehér
+          },
+          'piros': {
+            'mely': '#A0241C',     // Mély magyar piros
+            'vilagos': '#D0403A'   // Világosabb piros
+          },
+          'zold': {
+            'palack': '#50714B',   // Palackzöld
+            'kakukkfu': '#7E9872'  // Kakukkfű zöld
+          },
+          'sarga': {
+            'szalma': '#FFD75F',   // Szalmasárga
+            'vilagos': '#FFEEB2'   // Világos sárga
+          }
+        },
+        'csarda-barna-sotet': '#2C1810',
+        'csarda-barna-kozep': '#5C392C',
+        'csarda-barna-vilagos': '#8C574A',
+        'csarda-piros-mely': '#8B0000',
+        'csarda-piros-vilagos': '#FF6B6B',
+        'csarda-feher-alap': '#FFFFFF',
+        'csarda-feher-tort': '#F5F5F5',
+        'csarda-zold-palack': '#2E7D32',
+        'csarda-zold-kakukkfu': '#4CAF50',
+        'csarda-sarga-szalma': '#FFD700'
+      },
+      fontFamily: {
+        'bree': ['Bree Serif', 'serif'],
+        'lora': ['Lora', 'serif'],
+        'nunito': ['Nunito Sans', 'sans-serif']
+      },
+      borderWidth: {
+        '3': '3px'
+      },
+      backgroundImage: {
+        'csarda-pattern': "url('/src/assets/csarda-pattern.svg')",
+        'fa-pattern': "url('/src/assets/fa-pattern.svg')"
+      },
+      keyframes: {
+        fadeInUp: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        }
+      },
+      animation: {
+        'fade-in-up': 'fadeInUp 0.5s ease-out forwards'
+      }
+    },
+  },
+  plugins: [],
+} 
+

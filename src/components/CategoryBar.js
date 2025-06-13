@@ -3,10 +3,11 @@ import React from 'react';
 const CategoryBar = ({ selectedCategory, onSelect }) => {
   const categories = [
     { id: 'langos', name: 'Lángos' },
-    { id: 'leves', name: 'Levesek' },
-    { id: 'foetelek', name: 'Főételek' },
-    { id: 'koret', name: 'Köretek' },
-    { id: 'desszert', name: 'Desszertek' },
+    { id: 'szendvics', name: 'Szendvicsek' },
+    { id: 'foetel', name: 'Főételek' },
+    { id: 'palacsinta', name: 'Palacsinta' },
+    { id: 'jegkrem', name: 'Jégkrémek' },
+    { id: 'chips', name: 'Chipsek' },
     { id: 'ital', name: 'Italok' }
   ];
 
@@ -15,8 +16,8 @@ const CategoryBar = ({ selectedCategory, onSelect }) => {
       h-full
       flex
       items-center
-      px-4
-      space-x-4
+      px-2
+      space-x-2
       overflow-x-auto
       scrollbar-thin
       scrollbar-thumb-csarda-barna-vilagos
@@ -27,11 +28,11 @@ const CategoryBar = ({ selectedCategory, onSelect }) => {
           key={category.id}
           onClick={() => onSelect(category.id)}
           className={`
-            px-6
-            py-2
+            px-3
+            py-1.5
             rounded-lg
             font-bree
-            text-lg
+            text-2xl
             transition-colors
             duration-200
             border-2

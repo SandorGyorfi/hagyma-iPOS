@@ -28,7 +28,17 @@ module.exports = {
             'szalma': '#FFD75F',   // Szalmasárga
             'vilagos': '#FFEEB2'   // Világos sárga
           }
-        }
+        },
+        'csarda-barna-sotet': '#2C1810',
+        'csarda-barna-kozep': '#5C392C',
+        'csarda-barna-vilagos': '#8C574A',
+        'csarda-piros-mely': '#8B0000',
+        'csarda-piros-vilagos': '#FF6B6B',
+        'csarda-feher-alap': '#FFFFFF',
+        'csarda-feher-tort': '#F5F5F5',
+        'csarda-zold-palack': '#2E7D32',
+        'csarda-zold-kakukkfu': '#4CAF50',
+        'csarda-sarga-szalma': '#FFD700'
       },
       fontFamily: {
         'bree': ['Bree Serif', 'serif'],
@@ -43,19 +53,19 @@ module.exports = {
         'fa-pattern': "url('/src/assets/fa-pattern.svg')"
       },
       keyframes: {
-        'fade-in-up': {
+        fadeInUp: {
           '0%': {
             opacity: '0',
-            transform: 'translateY(20px) translateX(-50%)'
+            transform: 'translateY(20px)'
           },
           '100%': {
             opacity: '1',
-            transform: 'translateY(0) translateX(-50%)'
-          },
+            transform: 'translateY(0)'
+          }
         }
       },
       animation: {
-        'fade-in-up': 'fade-in-up 0.3s ease-out forwards'
+        'fade-in-up': 'fadeInUp 0.5s ease-out forwards'
       }
     },
   },

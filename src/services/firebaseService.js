@@ -7,10 +7,19 @@ import {
   where,
   getDocs,
   orderBy,
-  runTransaction
+  doc,
+  updateDoc,
+  deleteDoc,
+  writeBatch
 } from 'firebase/firestore';
+import {
+  toFirebaseOrder,
+  toUIOrder,
+  toFirebaseItem,
+  toUIItem
+} from '../utils/dataConverters';
 
-// Rendelés mentése tranzakcióval
+// Rendelés mentése
 export const saveOrder = async (orderData) => {
   try {
     // Ellenőrizzük, hogy van-e termék a kosárban
@@ -18,33 +27,16 @@ export const saveOrder = async (orderData) => {
       throw new Error('A kosár üres');
     }
 
-    // Ellenőrizzük a kötelező mezőket minden tételnél
-    orderData.items.forEach(item => {
-      if (!item.id || !item.nev || !item.ar || !item.mennyiseg || !item.kategoria) {
-        throw new Error('Hiányzó kötelező mezők a rendelési tételekben');
-      }
-    });
-
-    // Tranzakció indítása
     const ordersRef = collection(db, 'orders');
-    const orderDoc = await runTransaction(db, async (transaction) => {
-      // Rendelés létrehozása
-      const newOrder = {
-        items: orderData.items,
-        total: parseFloat(orderData.total.toFixed(2)), // Kerekítés 2 tizedesre
-        status: 'paid',
-        timestamp: serverTimestamp(),
-        paymentMethod: orderData.paymentMethod || 'cash'
-      };
-
-      // Rendelés mentése
-      const docRef = await addDoc(ordersRef, newOrder);
-      return { id: docRef.id, ...newOrder };
+    const firebaseOrder = toFirebaseOrder({
+      ...orderData,
+      timestamp: serverTimestamp()
     });
 
+    const docRef = await addDoc(ordersRef, firebaseOrder);
     return { 
       success: true, 
-      orderId: orderDoc.id,
+      orderId: docRef.id,
       message: 'Rendelés sikeresen mentve'
     };
 
@@ -53,8 +45,59 @@ export const saveOrder = async (orderData) => {
     return { 
       success: false, 
       error: error.message || 'Ismeretlen hiba történt a rendelés mentése során',
-      details: error // Fejlesztői információk
+      details: error
     };
+  }
+};
+
+// Rendelések lekérése
+export const getOrders = async () => {
+  try {
+    const q = query(
+      collection(db, 'orders'),
+      orderBy('timestamp', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => toUIOrder({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error('Hiba a rendelések lekérése során:', error);
+    return [];
+  }
+};
+
+// Rendelés státuszának frissítése
+export const updateOrderStatus = async (orderId, status) => {
+  // Ellenőrizzük, hogy érvényes státusz-e
+  const validStatuses = ['new', 'processing', 'completed', 'cancelled'];
+  if (!validStatuses.includes(status)) {
+    return { 
+      success: false, 
+      error: 'Érvénytelen státusz. Lehetséges értékek: ' + validStatuses.join(', ')
+    };
+  }
+
+  try {
+    const orderRef = doc(db, 'orders', orderId);
+    await updateDoc(orderRef, { status });
+    return { success: true };
+  } catch (error) {
+    console.error('Hiba a rendelés státuszának frissítése során:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Rendelés törlése
+export const deleteOrder = async (orderId) => {
+  try {
+    const orderRef = doc(db, 'orders', orderId);
+    await deleteDoc(orderRef);
+    return { success: true };
+  } catch (error) {
+    console.error('Hiba a rendelés törlése során:', error);
+    return { success: false, error: error.message };
   }
 };
 
@@ -63,25 +106,21 @@ export const getTodayOrders = async () => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    const ordersRef = collection(db, 'orders');
+    
     const q = query(
-      ordersRef,
+      collection(db, 'orders'),
       where('timestamp', '>=', today),
       orderBy('timestamp', 'desc')
     );
-
+    
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
+    return querySnapshot.docs.map(doc => toUIOrder({
       id: doc.id,
-      ...doc.data(),
-      // Timestamp konvertálása dátummá
-      timestamp: doc.data().timestamp?.toDate() || null
+      ...doc.data()
     }));
-
   } catch (error) {
-    console.error('Hiba a rendelések lekérése során:', error);
-    throw error;
+    console.error('Hiba a mai rendelések lekérése során:', error);
+    return [];
   }
 };
 
@@ -116,28 +155,31 @@ export const checkDuplicateOrder = async (orderData, timeWindow = 60000) => {
   }
 };
 
-// Termékek szinkronizálása Firestore-ral
-export const syncProducts = async (products) => {
+// Menü szinkronizálása
+export const syncMenu = async (menuItems) => {
   try {
-    const batch = db.batch();
-    const productsRef = collection(db, 'products');
+    const batch = writeBatch(db);
+    const menuRef = collection(db, 'menu');
 
-    // Töröljük a régi termékeket
-    const oldProducts = await getDocs(productsRef);
-    oldProducts.forEach((doc) => {
+    // Konvertáljuk a tételeket Firebase formátumra
+    const firebaseItems = menuItems.map(toFirebaseItem);
+
+    // Töröljük a régi menüt
+    const oldMenu = await getDocs(menuRef);
+    oldMenu.forEach((doc) => {
       batch.delete(doc.ref);
     });
 
-    // Új termékek hozzáadása
-    products.forEach((product) => {
-      const docRef = doc(productsRef);
-      batch.set(docRef, product);
+    // Új menü hozzáadása
+    firebaseItems.forEach((item) => {
+      const docRef = doc(menuRef);
+      batch.set(docRef, item);
     });
 
     await batch.commit();
     return { success: true };
   } catch (error) {
-    console.error('Hiba a termékek szinkronizálása során:', error);
+    console.error('Hiba a menü szinkronizálása során:', error);
     return { success: false, error: error.message };
   }
 };
@@ -145,14 +187,14 @@ export const syncProducts = async (products) => {
 // Kategóriák lekérése
 export const getCategories = async () => {
   try {
-    const productsRef = collection(db, 'products');
-    const querySnapshot = await getDocs(productsRef);
+    const menuRef = collection(db, 'menu');
+    const querySnapshot = await getDocs(menuRef);
     const categories = new Set();
 
     querySnapshot.forEach((doc) => {
-      const product = doc.data();
-      if (product.category) {
-        categories.add(product.category);
+      const item = doc.data();
+      if (item.category) {
+        categories.add(item.category);
       }
     });
 

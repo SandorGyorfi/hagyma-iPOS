@@ -39,7 +39,7 @@
       "id": "palacsinta",
       "nev": "Palacsinta",
       "ar": 1.00,
-      "kategoria": "desszert",
+      "kategoria": "palacsinta",
       "leiras": "Klasszikus palacsinta"
     },
     {
@@ -120,8 +120,50 @@
       "leiras": "Gyerekmenü karajjal, körettel és palacsintával"
     },
     {
+      "id": "sultkrumpli",
+      "nev": "Sült krumpli",
+      "ar": 2.00,
+      "kategoria": "foetel",
+      "leiras": "Frissen sült hasábburgonya"
+    },
+    {
+      "id": "sultkrumpli-sajtos",
+      "nev": "Sült krumpli + Sajt",
+      "ar": 2.50,
+      "kategoria": "foetel",
+      "leiras": "Sült krumpli reszelt sajttal"
+    },
+    {
+      "id": "jegkrem-kicsi",
+      "nev": "Kis jégkrém",
+      "ar": 1.00,
+      "kategoria": "jegkrem",
+      "leiras": "Kis adag jégkrém"
+    },
+    {
+      "id": "jegkrem-nagy",
+      "nev": "Nagy jégkrém",
+      "ar": 1.50,
+      "kategoria": "jegkrem",
+      "leiras": "Nagy adag jégkrém"
+    },
+    {
+      "id": "chips-kicsi",
+      "nev": "Kis chips",
+      "ar": 1.00,
+      "kategoria": "chips",
+      "leiras": "Kis adag chips"
+    },
+    {
+      "id": "chips-nagy",
+      "nev": "Nagy chips",
+      "ar": 1.50,
+      "kategoria": "chips",
+      "leiras": "Nagy adag chips"
+    },
+    {
       "id": "udito",
-      "nev": "Üdítő (Sió, Cola, Rango, Fanta)",
+      "nev": "Üdítő (Sió, Cola, Tango, Fanta)",
       "ar": 1.00,
       "kategoria": "ital",
       "leiras": "Választható üdítőitalok"

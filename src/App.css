@@ -1,0 +1,31 @@
+/* Alap stílusok */
+body {
+  @apply bg-csarda-feher-tort;
+}
+
+/* Scrollbar testreszabása */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-csarda-feher-alap;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-csarda-barna-vilagos rounded-full;
+}
+
+/* Animációk */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 
