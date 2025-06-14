@@ -15,8 +15,7 @@ import {
 import {
   toFirebaseOrder,
   toUIOrder,
-  toFirebaseItem,
-  toUIItem
+  toFirebaseItem
 } from '../utils/dataConverters';
 
 // Rendelés mentése

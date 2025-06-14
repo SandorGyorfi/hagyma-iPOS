@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const PasswordProtected = ({ children }) => {
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
-  const auth = getAuth();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      // Használjuk a Firebase autentikációt email/jelszó kombinációval
-      await signInWithEmailAndPassword(auth, 'admin@hagyma-ipos.hu', password);
+    // Környezeti változóból olvassuk a jelszót
+    if (password === process.env.REACT_APP_ADMIN_PASSWORD) {
       setIsAuthenticated(true);
       setError('');
-    } catch (err) {
+    } else {
       setError('Helytelen jelszó!');
       setPassword('');
     }

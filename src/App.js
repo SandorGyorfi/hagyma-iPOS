@@ -8,7 +8,7 @@ import CartSidebar from './components/CartSidebar';
 import { menu } from './data/menu';
 import { saveOrder } from './services/firebaseService';
 import { toUIItem } from './utils/dataConverters';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import { useFullscreen } from './hooks/useFullscreen';
 import FullscreenToggleButton from './components/FullscreenToggleButton';
 import BevetelOsszegzes from './components/BevetelOsszegzes';
@@ -24,13 +24,17 @@ const PosApp = () => {
   const { isFullscreen, retryFullscreen } = useFullscreen();
   const [selectedCategory, setSelectedCategory] = useState('langos');
   const [cartItems, setCartItems] = useState([]);
-  const [toast, setToast] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Toast megjelenítése
   const showToast = (message, type = 'success') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
+    if (type === 'error') {
+      toast.error(message);
+    } else if (type === 'warning') {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
   };
 
   // Mindig próbáljuk meg a teljes képernyőt, ha nincs
